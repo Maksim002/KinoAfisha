@@ -11,8 +11,9 @@ import com.bumptech.glide.Glide;
 public class ViewHolder extends RecyclerView.ViewHolder {
     private ImageView imageView;
     private TextView name, id, url,vote,countVote,phone,address;
+    private MoveClikListener listener;
 
-    public ViewHolder(@NonNull View itemView) {
+    public ViewHolder(@NonNull View itemView, MoveClikListener listener) {
         super(itemView);
         imageView = itemView.findViewById(R.id.imageView);
         name = itemView.findViewById(R.id.name);
@@ -21,9 +22,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         countVote = itemView.findViewById(R.id.countVote);
         phone = itemView.findViewById(R.id.phone);
         address = itemView.findViewById(R.id.address);
+
+        this.listener = listener;
     }
 
-    public void bind(UnMain value) {
+    public void bind(final UnMain value) {
         Glide.with(itemView)
         .load(MainActivity.baseUrl + value.getImage())
         .into(imageView);
@@ -35,6 +38,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         phone.setText(value.getPhone());
         address.setText(value.getAddress());
 
-
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClikIcon(value);
+            }
+        });
     }
 }
